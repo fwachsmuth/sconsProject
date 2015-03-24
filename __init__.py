@@ -1,6 +1,7 @@
 """
 SConsProject
 
+
 The sconsproject package proposes a way to easily create the compilation system
 of your project with the minimum of information. It's an helper around SCons.
 

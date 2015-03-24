@@ -64,6 +64,30 @@ if SCons.Util.case_sensitive_suffixes('.h', '.H'):
 #cxx_suffixes = cplusplus.CXXSuffixes
 cxx_suffixes = [".c", ".cxx", ".cpp", ".cc"]
 
+# this function replace a given pattern (pat) by s_after inside the file fname
+def fileReplace(fname, pat, s_after):
+    # first, see if the pattern is even in the file.
+    with open(fname) as f:
+        if not any(re.search(pat, line) for line in f):
+            return # pattern does not occur in file so we are done.
+
+    # pattern is in the file, so perform replace operation.
+    with open(fname) as f:
+        out_fname = fname + ".tmp"
+        out = open(out_fname, "w")
+        for line in f:
+            out.write(re.sub(pat, s_after, line))
+        out.close()
+        f.close();
+        os.remove(fname)
+        os.rename(out_fname, fname)
+
+# simplify very long useless includes such as #include "../../../../foo.hpp" with #include "./foo.hpp"
+# this is useful because moc generates very long relative includes that implies issues on windows OS.
+def simplifyInclude(target, source, env):
+    fileReplace(target[0].rstr(), "#include\s+\"(\.\./)+", "#include \"" + os.getcwd().replace("\\", "/") + "/" );
+    return None
+
 def checkMocIncluded(target, source, env):
 	moc = target[0]
 	cpp = source[0]
@@ -107,7 +131,7 @@ class _Automoc(object):
 			debug = int(env.subst('$QT_DEBUG'))
 		except ValueError:
 			debug = 0
-		
+
 		# some shortcuts used in the scanner
 		splitext = SCons.Util.splitext
 		objBuilder = getattr(env, self.objBuilderName)
@@ -130,16 +154,16 @@ class _Automoc(object):
 		out_sources = source[:]
 
 		for obj in SCons.Util.flatten(source):
-			if not obj.has_builder():
-				# binary obj file provided
-				if debug:
-					print "scons: qt: '%s' seems to be a binary. Discarded." % str(obj)
-				continue
-			cpp = obj.sources[0]
+			if not isinstance(obj, SCons.Node.Node) or not obj.has_builder():
+ 				# binary obj file provided
+ 				if debug:
+ 					print "scons: qt: '%s' seems to be a binary. Discarded." % str(obj)
+ 				continue
+ 			cpp = obj.sources[0]
 			if not splitext(str(cpp))[1] in cxx_suffixes:
 				if debug:
 					print "scons: qt: '%s' is no cxx file. Discarded." % str(cpp) 
-				# c or fortran source
+					# c or fortran source
 				continue
 			#cpp_contents = comment.sub('', cpp.get_text_contents())
 			cpp_contents = cpp.get_text_contents()
@@ -170,8 +194,7 @@ class _Automoc(object):
 				# (to be included in cpp)
 				moc = env.Moc(cpp)
 				env.Ignore(moc, moc)
-				if debug:
-					print "scons: qt: found Q_OBJECT macro in '%s', moc'ing to '%s'" % (str(cpp), str(moc))
+				print "scons: qt: found Q_OBJECT macro in '%s', moc'ing to '%s'" % (str(cpp), str(moc))
 				#moc.source_scanner = SCons.Defaults.CScan
 		# restore the original env attributes (FIXME)
 		objBuilder.env = objBuilderEnv
@@ -270,6 +293,10 @@ def generate(env):
 		QT_MOCCXXPREFIX = '',
 		QT_MOCCXXSUFFIX = '.moc',
 		QT_UISUFFIX = '.ui',
+                QT4_LUPDATE = os.path.join('$QT_BINPATH','lupdate'),
+                QT4_LRELEASE = os.path.join('$QT_BINPATH','lrelease'),
+                QT4_LUPDATECOM = '$QT4_LUPDATE $SOURCE -ts $TARGET',
+                QT4_LRELEASECOM = '$QT4_LRELEASE $SOURCE',
 
 		# Commands for the qt support ...
 		# command to generate header, implementation and moc-file
@@ -289,8 +316,7 @@ def generate(env):
 		# declarated in a cpp file
 		QT_MOCFROMCXXCOM = [
 			CLVar('$QT_MOC $QT_MOCFROMCXXFLAGS -o ${TARGETS[0]} $SOURCE'),
-			Action(checkMocIncluded,None),
-		]
+                        Action(checkMocIncluded,None), Action(simplifyInclude)]
 	)
 
 	# ... and the corresponding builders
@@ -316,6 +342,20 @@ def generate(env):
 		mocBld.suffix[cxx] = '$QT_MOCCXXSUFFIX'
 
 	# register the builders 
+        # Translation builder
+        tsbuilder = Builder(
+            action = SCons.Action.Action('$QT4_LUPDATECOM'), #,'$QT4_LUPDATECOMSTR'),
+            multi=1
+            )
+        qmbuilder = Builder(
+            action = SCons.Action.Action('$QT4_LRELEASECOM'),# , '$QT4_LRELEASECOMSTR'),
+            src_suffix = '.ts',
+            suffix = '.qm',
+            single_source = True
+            )
+
+        env['BUILDERS']['Ts'] = tsbuilder
+        env['BUILDERS']['Qm'] = qmbuilder
 	env['BUILDERS']['Uic'] = uicBld
 	env['BUILDERS']['Moc'] = mocBld
 	static_obj, shared_obj = SCons.Tool.createObjBuilders(env)

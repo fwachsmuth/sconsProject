@@ -4,6 +4,8 @@ ccBin = 'cl'
 cxxBin = 'cl'
 linkBin = 'link'
 linkxxBin = 'link'
+arBin = ''
+ranlibBin = ''
 
 ccVersionStr = 'unknown'
 ccVersion = [0,0,0]
@@ -15,7 +17,9 @@ CC['define']   = '/D'
 CC['exceptionsEnabled'] = '/EHsc' #'/GX'
 
 CC['multithreadedlib'] = '/MD'
+CC['multithreaded_static_lib'] = '/MT'
 CC['singlethreadedlib'] = '/ML'
+CC['bigobj'] = '/bigobj'
 
 CC['optimize']   =['/O2','/Ox','/GA','/GL']
 CC['nooptimize'] =['/Od']
@@ -70,6 +74,8 @@ CC['sse3']  = ['/arch:SSE3']
 CC['ssse3'] = ['/arch:SSSE3']
 CC['sse4']  = ['/arch:SSE4']
 
+# needed for compatibility with qt5 precompiled library
+CC['wchar'] = ['/Zc:wchar_t-']
 
 def retrieveVersion(ccBinArg):
     import subprocess

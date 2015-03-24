@@ -516,8 +516,11 @@ class SConsProject:
         opts.Add('aliases', 'A list of custom aliases.', [])
         opts.Add('jobs', 'Parallel jobs', '1')
         opts.Add(SCons.Script.BoolVariable('check_libs', 'Enable/Disable lib checking', True))
+        opts.Add('SHLIBSUFFIX', 'Specify the shared libraries suffix', '.dll' if self.windows else( '.dylib' if self.macos else '.so' ) )
         opts.Add('CC', 'Specify the C Compiler', self.compiler.ccBin)
         opts.Add('CXX', 'Specify the C++ Compiler', self.compiler.cxxBin)
+        opts.Add('AR', 'Specify the C Compiler', self.compiler.arBin)
+        opts.Add('RANLIB', 'Specify the C++ Compiler', self.compiler.ranlibBin)
 
         opts.Add('SCRIPTTESTXX', 'Specify the script test binary', "nosetests")
         opts.Add('SCRIPTTESTFLAGS', 'Specify the script test flags', "--detailed-errors --process-timeout=60 --nocapture")
@@ -1078,7 +1081,7 @@ class SConsProject:
 
 
     def StaticLibrary( self, target,
-            sources=[], dirs=[], libraries=[], includes=[],
+			sources=[], precsrc='', precinc='', dirs=[], libraries=[], includes=[],
             env=None, localEnvFlags={}, replaceLocalEnvFlags={}, externEnvFlags={}, globalEnvFlags={},
             dependencies=[], installDir=None, installAs=None, install=True,
             headers=[], localHeaders=[],
@@ -1152,6 +1155,12 @@ class SConsProject:
 
         sourcesFiles = self.getAbsoluteCwd( sourcesFiles )
 
+        #adding precompiled headers
+        if precinc and self.windows:
+            localEnv['PCHSTOP'] = self.getRealAbsoluteCwd() + '/' + precinc
+            localEnv.Append( CPPFLAGS = [ '/FI' + self.getRealAbsoluteCwd() + '/' + precinc, '/Zm135' ] )
+            localEnv['PCH'] = localEnv.PCH( precsrc )[0]
+
         # create the target
         dstLib = localEnv.StaticLibrary( target=target, source=sourcesFiles )
 
@@ -1198,7 +1207,7 @@ class SConsProject:
 
 
     def SharedLibrary( self, target,
-                sources=[], dirs=[], libraries=[], includes=[],
+                sources=[], precsrc='', precinc='', dirs=[], libraries=[], includes=[],
                 env=None, localEnvFlags={}, replaceLocalEnvFlags={}, externEnvFlags={}, globalEnvFlags={},
                 dependencies=[], installDir=None, installAs=None, install=True,
                 headers=[], localHeaders=[],
@@ -1266,6 +1275,12 @@ class SConsProject:
 
         sourcesFiles = self.getAbsoluteCwd( sourcesFiles )
 
+        #adding precompiled headers
+        if precinc and self.windows:
+            localEnv['PCHSTOP'] = self.getRealAbsoluteCwd() + '/' + precinc
+            localEnv.Append( CPPFLAGS = [ '/FI' + self.getRealAbsoluteCwd() + '/' + precinc, '/Zm135' ] )
+            localEnv['PCH'] = localEnv.PCH( precsrc )[0]
+
         #print "target:", target
         localEnv['PDB'] = str(target) + '.pdb'
         # create the target
@@ -1318,7 +1333,7 @@ class SConsProject:
         return dstLibInstall
 
     def Program( self, target,
-            sources=[], dirs=[], libraries=[], includes=[],
+			sources=[], dirs=[], libraries=[], includes=[], rc_files = [], precsrc = [], precinc = [],
             env=None, localEnvFlags={}, replaceLocalEnvFlags={}, externEnvFlags={}, globalEnvFlags={},
             dependencies=[], installDir=None, install=True,
             headers=[], localHeaders=[],
@@ -1381,9 +1396,19 @@ class SConsProject:
 
         sourcesFiles = self.getAbsoluteCwd( sourcesFiles )
 
+        # Add rc files (windows only)
+        if self.windows:
+            for rc in rc_files:
+                print rc
+            #   sourcesFiles.append( localEnv.RES( rc ) );
+
+        if precinc and self.windows:
+            localEnv['PCHSTOP'] = self.getRealAbsoluteCwd() + '/' + precinc
+            localEnv.Append( CPPFLAGS = [ '/FI' + self.getRealAbsoluteCwd() + '/' + precinc, '/Zm135' ] )
+            localEnv['PCH'] = localEnv.PCH( precsrc )[0]
+
         # create the target
         dst = localEnv.Program( target=target, source=sourcesFiles )
-
         dstInstall = localEnv.Install( installDir if installDir else self.inOutputBin(), dst ) if install else dst
         localEnv.Alias( target, dstInstall )
         self.declareTarget(localEnv, target)

@@ -11,6 +11,8 @@ ccBin = 'gcc'
 cxxBin = 'g++'
 linkBin = ccBin
 linkxxBin = cxxBin
+arBin = 'ar'
+ranlibBin = 'ranlib'
 ccVersionStr = 'unknown'
 ccVersion = [0,0,0]
 cxxVersionStr = 'unknown'
@@ -23,6 +25,10 @@ CC['version']   = '-dumpversion'
 
 CC['define']   = '-D'
 
+CC['bigobj'] = ''
+CC['multithreadedlib'] = ''
+CC['multithreaded_static_lib'] = ''
+CC['singlethreadedlib'] = ''
 
 CC['optimize'] = ['-O3'] #, '-flto']#,
                   #'-finline-limit=700',
@@ -71,6 +77,9 @@ CC['profile']   = ['-pg']
 CC['linkprofile']   = ['-pg']
 CC['cover']     = ['-fprofile-arcs', '-ftest-coverage']
 CC['linkcover'] = ['-lgcov']
+
+# @see visual.py
+CC['wchar'] = []
 
 ##### -fprofile-arcs
 #    Instrument arcs during compilation. For each function of your program, GCC creates a program flow graph, then finds a spanning tree for the graph. Only arcs that are not on the spanning tree have to be instrumented: the compiler adds code to count the number of times that these arcs are executed. When an arc is the only exit or only entrance to a block, the instrumentation code can be added to the block; otherwise, a new basic block must be created to hold the instrumentation code.
