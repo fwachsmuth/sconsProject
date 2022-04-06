@@ -1,7 +1,7 @@
-from _external import *
-from boost import *
-from boost_serialization import *
-from qt5 import *
+from ._external import *
+from .boost import *
+from .boost_serialization import *
+from .qt5 import *
 
 qxorm = LibWithHeaderChecker(
 	'QxOrm',

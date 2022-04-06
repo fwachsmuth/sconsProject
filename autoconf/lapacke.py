@@ -1,6 +1,6 @@
-from _external import *
-from blas import *
-from lapack import *
+from ._external import *
+from .blas import *
+from .lapack import *
 
 lapacke = LibWithHeaderChecker( ['lapacke'],
                                 ['lapacke.h'],

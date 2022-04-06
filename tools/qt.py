@@ -44,7 +44,7 @@ import SCons.Scanner
 import SCons.Tool
 import SCons.Util
 
-class ToolQtWarning(SCons.Warnings.Warning):
+class ToolQtWarning(SCons.Warnings.SConsWarning):
 	pass
 
 class GeneratedMocFileNotIncluded(ToolQtWarning):
@@ -155,14 +155,14 @@ class _Automoc(object):
 
 		for obj in SCons.Util.flatten(source):
 			if not isinstance(obj, SCons.Node.Node) or not obj.has_builder():
- 				# binary obj file provided
- 				if debug:
- 					print "scons: qt: '%s' seems to be a binary. Discarded." % str(obj)
- 				continue
- 			cpp = obj.sources[0]
+				# binary obj file provided
+				if debug:
+					print("scons: qt: '%s' seems to be a binary. Discarded." % str(obj))
+				continue
+			cpp = obj.sources[0]
 			if not splitext(str(cpp))[1] in cxx_suffixes:
 				if debug:
-					print "scons: qt: '%s' is no cxx file. Discarded." % str(cpp) 
+					print("scons: qt: '%s' is no cxx file. Discarded." % str(cpp))
 					# c or fortran source
 				continue
 			#cpp_contents = comment.sub('', cpp.get_text_contents())
@@ -175,12 +175,12 @@ class _Automoc(object):
 				h = find_file(hname, (cpp.get_dir(),), env.File)
 				if h:
 					if debug:
-						print "scons: qt: Scanning '%s' (header of '%s')" % (str(h), str(cpp))
+						print("scons: qt: Scanning '%s' (header of '%s')" % (str(h), str(cpp)))
 					#h_contents = comment.sub('', h.get_text_contents())
 					h_contents = h.get_text_contents()
 					break
 			if not h and debug:
-				print "scons: qt: no header for '%s'." % (str(cpp))
+				print("scons: qt: no header for '%s'." % (str(cpp)))
 			if h and q_object_search.search(h_contents):
 				# h file with the Q_OBJECT macro found -> add moc_cpp
 				moc_cpp = env.Moc(h)
@@ -188,13 +188,13 @@ class _Automoc(object):
 				out_sources.append(moc_o)
 				#moc_cpp.target_scanner = SCons.Defaults.CScan
 				if debug:
-					print "scons: qt: found Q_OBJECT macro in '%s', moc'ing to '%s'" % (str(h), str(moc_cpp))
+					print("scons: qt: found Q_OBJECT macro in '%s', moc'ing to '%s'" % (str(h), str(moc_cpp)))
 			if cpp and q_object_search.search(cpp_contents):
 				# cpp file with Q_OBJECT macro found -> add moc
 				# (to be included in cpp)
 				moc = env.Moc(cpp)
 				env.Ignore(moc, moc)
-				print "scons: qt: found Q_OBJECT macro in '%s', moc'ing to '%s'" % (str(cpp), str(moc))
+				print("scons: qt: found Q_OBJECT macro in '%s', moc'ing to '%s'" % (str(cpp), str(moc)))
 				#moc.source_scanner = SCons.Defaults.CScan
 		# restore the original env attributes (FIXME)
 		objBuilder.env = objBuilderEnv
@@ -342,20 +342,20 @@ def generate(env):
 		mocBld.suffix[cxx] = '$QT_MOCCXXSUFFIX'
 
 	# register the builders 
-        # Translation builder
-        tsbuilder = Builder(
-            action = SCons.Action.Action('$QT4_LUPDATECOM'), #,'$QT4_LUPDATECOMSTR'),
-            multi=1
-            )
-        qmbuilder = Builder(
-            action = SCons.Action.Action('$QT4_LRELEASECOM'),# , '$QT4_LRELEASECOMSTR'),
-            src_suffix = '.ts',
-            suffix = '.qm',
-            single_source = True
-            )
+	# Translation builder
+	tsbuilder = Builder(
+		action = SCons.Action.Action('$QT4_LUPDATECOM'), #,'$QT4_LUPDATECOMSTR'),
+		multi=1
+		)
+	qmbuilder = Builder(
+		action = SCons.Action.Action('$QT4_LRELEASECOM'),# , '$QT4_LRELEASECOMSTR'),
+		src_suffix = '.ts',
+		suffix = '.qm',
+		single_source = True
+		)
 
-        env['BUILDERS']['Ts'] = tsbuilder
-        env['BUILDERS']['Qm'] = qmbuilder
+	env['BUILDERS']['Ts'] = tsbuilder
+	env['BUILDERS']['Qm'] = qmbuilder
 	env['BUILDERS']['Uic'] = uicBld
 	env['BUILDERS']['Moc'] = mocBld
 	static_obj, shared_obj = SCons.Tool.createObjBuilders(env)

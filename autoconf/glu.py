@@ -1,5 +1,5 @@
-from _external import *
-from gl import *
+from ._external import *
+from .gl import *
 
 if windows:
     glu = LibWithHeaderChecker('GLU32', ['windows.h','GL/glu.h'], 'c', dependencies=[gl])   

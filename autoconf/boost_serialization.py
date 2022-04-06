@@ -1,5 +1,5 @@
-from _external import *
-from boost import *
+from ._external import *
+from .boost import *
 
 boost_serialization = LibWithHeaderChecker( ['boost_serialization', 'boost_wserialization'],
                                             'boost/serialization/serialization.hpp',

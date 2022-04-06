@@ -2,7 +2,7 @@
 from SCons import Variables
 from SCons import Environment
 
-from _base import *
+from ._base import *
 
 class InternalLibChecker(BaseLibChecker):
 

@@ -1,6 +1,6 @@
-from _external import *
+from ._external import *
 from SCons.Script import *
-from glew import *
+from .glew import *
 import os
 
 def unique(list):

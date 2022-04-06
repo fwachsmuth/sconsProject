@@ -1,5 +1,1 @@
-
-import gcc
-import visual
-import clang
-
+from . import gcc, visual, clang

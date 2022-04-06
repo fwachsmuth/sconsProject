@@ -1,5 +1,5 @@
-from _external import *
-from pthread import *
+from ._external import *
+from .pthread import *
 
 half = LibWithHeaderChecker(
 		['Half'],

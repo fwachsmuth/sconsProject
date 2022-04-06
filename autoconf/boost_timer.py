@@ -1,5 +1,5 @@
-from _external import *
-from boost import *
+from ._external import *
+from .boost import *
 
 boost_timer = LibWithHeaderChecker(
 	'boost_timer',

@@ -5,7 +5,7 @@ import sys
 import warnings
 with warnings.catch_warnings():
 	warnings.simplefilter("ignore")
-	import subprocess32
+	import subprocess
 
 windows = os.name.lower() == "nt" and sys.platform.lower().startswith("win")
 
@@ -49,8 +49,8 @@ def execute_ScriptTest(target, source, env):
 	errcode = 0
 	with open(writingFilename, 'w') as writingFile:
 		try:
-			errcode = subprocess32.call(cmd, env=procenv, stdout=writingFile, stderr=subprocess32.STDOUT, timeout=60)
-		except subprocess32.TimeoutExpired as e:
+			errcode = subprocess.call(cmd, env=procenv, stdout=writingFile, stderr=subprocess.STDOUT, timeout=60)
+		except subprocess.TimeoutExpired as e:
 			writingFile.write( "scriptttest timeout expired: " + str(e) )
 			print("scriptttest timeout expired.")
 			errcode = -1

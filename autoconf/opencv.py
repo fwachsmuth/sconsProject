@@ -52,7 +52,7 @@
 # ie, the include paths should point to the source code module instead of 
 # the install directory
 
-from _external import *
+from ._external import *
 
 opencv = LibWithHeaderChecker([
 								'opencv_calib3d', 

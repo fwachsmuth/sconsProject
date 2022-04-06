@@ -1,6 +1,6 @@
-from _external import *
-from boost import *
-from lapack import *
+from ._external import *
+from .boost import *
+from .lapack import *
 
 boost_numeric_bindings = HeaderChecker(
 		'boost_numeric_bindings',

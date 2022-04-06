@@ -1,3 +1,3 @@
-from _external import *
+from ._external import *
 
 turbojpeg = LibWithHeaderChecker('turbojpeg', ['turbojpeg.h'], 'c')

@@ -1,6 +1,6 @@
 import os
 import sys
-import gcc
+from . import gcc
 import re
 
 name = 'clang'
@@ -47,7 +47,7 @@ def setup(ccBinArg, cxxBinArg):
     ccVersionStr = retrieveVersion(ccBinArg)
     cxxVersionStr = retrieveVersion(cxxBinArg)
     if ccVersionStr != cxxVersionStr:
-        print "Warning: CC version and CXX version doesn't match: CC version is %s and CXX version is %s\n" % (ccVersionStr, cxxVersionStr)
+        print("Warning: CC version and CXX version doesn't match: CC version is %s and CXX version is %s\n" % (ccVersionStr, cxxVersionStr))
 
     if ccVersionStr != 'unknown':
         ccVersion = re.findall(r"\d+", ccVersionStr)[:3]
@@ -68,6 +68,6 @@ def setup(ccBinArg, cxxBinArg):
         CC['warning3'].append('-Werror=enum-compare')
 
     # "warningX" contains all lower level warnings
-    for i in xrange(2, 4):
+    for i in range(2, 4):
         CC['warning'+str(i)].extend( CC['warning'+str(i-1)] )
 

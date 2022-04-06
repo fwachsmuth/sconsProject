@@ -1,8 +1,8 @@
 import os
 import sys
-from _external import *
-from winsock2 import *
-from boost import *
+from ._external import *
+from .winsock2 import *
+from .boost import *
 
 windows = os.name.lower() == "nt" and sys.platform.lower().startswith("win")
 if windows:

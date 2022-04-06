@@ -1,4 +1,4 @@
-from _external import *
+from ._external import *
 
 qpropertybrowser = LibWithHeaderChecker('qpropertybrowser', 'qtpropertybrowser.h', 'c++')
 

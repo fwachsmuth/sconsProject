@@ -1,6 +1,6 @@
-from _external import *
-from avcodec import *
-from avutil import *
+from ._external import *
+from .avcodec import *
+from .avutil import *
 
 avformat = LibWithHeaderChecker(
 				'avformat',

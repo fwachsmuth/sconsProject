@@ -1,4 +1,4 @@
-from _external import *
+from ._external import *
 
 corefoundation = LibWithHeaderChecker('CoreFoundation',
                                       'CoreFoundation/CoreFoundation.h',

@@ -15,6 +15,6 @@
 # incdir_glm = [ join(extern, 'glm/build/include/') ]
 # libdir_glm = [ join(extern, 'glm/build/lib/') ]
 
-from _external import *
+from ._external import *
 
 glm = LibWithHeaderChecker(['glm'], ['glm.h'], 'c', name='glm')

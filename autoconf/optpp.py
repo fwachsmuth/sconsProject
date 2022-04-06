@@ -1,5 +1,5 @@
-from _external import *
-from newmat import *
+from ._external import *
+from .newmat import *
 
 optpp = LibWithHeaderChecker(
 		'opt',

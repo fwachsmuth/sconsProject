@@ -1,5 +1,5 @@
-from _external import *
-from ffmpeg import ffmpeg
+from ._external import *
+from .ffmpeg import ffmpeg
 
 avtranscoder = LibWithHeaderChecker(
 				'avtranscoder',

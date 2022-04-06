@@ -1,6 +1,5 @@
 
-import _external
-import _internal
+from . import _external, _internal
 
 import os
 dir = os.path.abspath(os.path.dirname(__file__))

@@ -1,5 +1,5 @@
-from _external import *
-from python import *
+from ._external import *
+from .python import *
 
 python_numpy = HeaderChecker(
                    name='python_numpy',

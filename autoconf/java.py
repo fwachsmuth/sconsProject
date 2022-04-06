@@ -1,3 +1,3 @@
-from _external import *
+from ._external import *
 
 java = HeaderChecker('java', 'jni.h', 'c')

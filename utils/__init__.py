@@ -1,4 +1,1 @@
-
-import utils
-import colors
-
+from . import utils, colors

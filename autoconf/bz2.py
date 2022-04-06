@@ -1,3 +1,3 @@
-from _external import *
+from ._external import *
 
 bz2 = LibChecker('bz2')

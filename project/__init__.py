@@ -168,7 +168,7 @@ class SConsProject:
         # to use env.Program(...) instead of simply Program().
         SCons.Defaults.DefaultEnvironment(tools = [])
         # Avoid RCS and SCCS scans by using env.SourceCode(".", None) - this is especially interesting if you are using lots of c or c++ headers in your program and that your file system is remote (nfs, samba).
-        self.env.SourceCode('.', None)
+        #self.env.SourceCode('.', None)
         # as of SCons 0.98, you can set the Decider function on an environment. MD5-timestamp says if the timestamp matches, don't bother re-MD5ing the file. This can give huge speedups.
         self.env.Decider('MD5-timestamp')
         # This option tells SCons to intelligently cache implicit dependencies. It attempts to determine if the implicit dependencies have changed since the last build, and if so it will recalculate them. This is usually slower than using --implicit-deps-unchanged, but is also more accurate.
@@ -188,25 +188,25 @@ class SConsProject:
         Print information at compilation's begining.
         '''
         sys.stdout.write(self.env['color_info'])
-        print ':' * 80
-        print '::' + ' '*32, self.env['mode'], 'mode'
-        print ':' * 80
-        print ':: dir                = ' + self.dir
-        print ':: dir_output_build   = ' + self.dir_output_build
-        print ':: dir_output_bin     = ' + self.dir_output_bin
-        print ':: dir_output_plugin  = ' + self.dir_output_plugin
-        print ':: dir_output_lib     = ' + self.dir_output_lib
-        print ':: dir_output_test    = ' + self.dir_output_test
-        print ':: dir_sconsProject   = ' + self.dir_sconsProject
-        print ':: now                = ' + self.now
-        print ':: osname             = ' + self.osname
-        print ':: sysplatform        = ' + self.sysplatform
-        print ':: hostname           = ' + self.hostname
-        print ':: compiler c         = %s (%s)' % (self.env['CC'], self.env['CCVERSION'])
-        print ':: compiler c++       = %s (%s)' % (self.env['CXX'], self.env['CXXVERSION'])
-        print ':: parallel jobs      = %d' % (SCons.Script.GetOption('num_jobs'))
+        print(':' * 80)
+        print('::' + ' '*32, self.env['mode'], 'mode')
+        print(':' * 80)
+        print(':: dir                = ' + self.dir)
+        print(':: dir_output_build   = ' + self.dir_output_build)
+        print(':: dir_output_bin     = ' + self.dir_output_bin)
+        print(':: dir_output_plugin  = ' + self.dir_output_plugin)
+        print(':: dir_output_lib     = ' + self.dir_output_lib)
+        print(':: dir_output_test    = ' + self.dir_output_test)
+        print(':: dir_sconsProject   = ' + self.dir_sconsProject)
+        print(':: now                = ' + self.now)
+        print(':: osname             = ' + self.osname)
+        print(':: sysplatform        = ' + self.sysplatform)
+        print(':: hostname           = ' + self.hostname)
+        print(':: compiler c         = %s (%s)' % (self.env['CC'], self.env['CCVERSION']))
+        print(':: compiler c++       = %s (%s)' % (self.env['CXX'], self.env['CXXVERSION']))
+        print(':: parallel jobs      = %d' % (SCons.Script.GetOption('num_jobs')))
         if self.env['ccache']:
-            print ':: ccachedir          = ' + self.env['ccachedir']
+            print(':: ccachedir          = ' + self.env['ccachedir'])
         print(':' * 80)
         sys.stdout.write(self.env['color_clear'])
 
@@ -215,18 +215,18 @@ class SConsProject:
         Debug function to display all environement options.
         '''
         if not env:
-            print ':' * 20, ' env ', ':' * 20
+            print(':' * 20, ' env ', ':' * 20)
             env = self.env
         if not keys:
             sys.stdout.write(self.env['color_info'])
-            print env.Dump()
+            print(env.Dump())
         else:
-            print '*' * 50, 'keys: ', keys
+            print('*' * 50, 'keys: ', keys)
             dict = env.Dictionary()
             for key in keys:
                 if key in dict:
                     sys.stdout.write(self.env['color_info'])
-                    print ':' * 10, ' %s = %s' % (key, dict[key])
+                    print(':' * 10, ' %s = %s' % (key, dict[key]))
         sys.stdout.write(self.env['color_clear'])
 
     def getAllAbsoluteCwd(self, relativePath=None):
@@ -331,11 +331,11 @@ class SConsProject:
     def inBuildDir(self, * dirs):
         '''Returns "dirs" as subdirectories of temporary "buildDir".'''
         if not dirs:
-            return string.replace(os.getcwd(), self.dir, self.dir_output_build, 1)
+            return os.getcwd().replace(self.dir, self.dir_output_build, 1)
         if len(dirs) == 1 and isinstance(dirs[0], str):
             d = dirs[0]
             if not d.startswith(self.dir_output_build):
-                return string.replace(d, self.dir, self.dir_output_build, 1)
+                return d.replace(self.dir, self.dir_output_build, 1)
             else:
                 return d
         l_dirs = SCons.Util.flatten(dirs)
@@ -454,7 +454,7 @@ class SConsProject:
         if self.windows:
             self.compiler = compiler.visual
         elif self.macos:
-            print dir(self.env)
+            print(dir(self.env))
             self.compiler = compiler.clang
         else:
             self.compiler = compiler.gcc
@@ -488,7 +488,7 @@ class SConsProject:
                 self.env.Tool('mingw')
             else:
                 self.env.Tool('default')
-                print 'Error: Unrecognized compiler value on this platform. ('+str(compilerName)+')'
+                print('Error: Unrecognized compiler value on this platform. ('+str(compilerName)+')')
 
     def createOptions(self, filename, args):
         '''
@@ -742,8 +742,8 @@ class SConsProject:
         def printInstalledFiles(target, source, env):
             # Whatever it takes to build
             for t in SCons.Script.FindInstalledFiles():
-                print '*', t.name, ':'
-                print ' '*5, t.abspath
+                print('*', t.name, ':')
+                print(' '*5, t.abspath)
             return None
 
         printInstalledFilesCmd = self.env.Command('always', '', printInstalledFiles)
@@ -752,21 +752,21 @@ class SConsProject:
         if self.libs_error:
             sys.stdout.write(self.env['color_error'])
             for lib in self.libs_error:
-                print "Error in '" + lib.name + "' library :"
+                print("Error in '" + lib.name + "' library :")
                 if lib.error:
-                    print '\t', lib.error
+                    print('\t', lib.error)
             sys.stdout.write(self.env['color_clear'])
             if not self.env['ignore_configure_errors']:
-                print ''
-                print ''
-                print ''
-                print '    Errors during the configure. Some external libraries are missing.'
-                print '    See "config.log" file to check the errors.'
-                print ''
-                print '    You could ignore these errors and build the possible targets.'
-                print '        >>> scons ignore_configure_errors=1'
-                print ''
-                print ''
+                print('')
+                print('')
+                print('')
+                print('    Errors during the configure. Some external libraries are missing.')
+                print('    See "config.log" file to check the errors.')
+                print('')
+                print('    You could ignore these errors and build the possible targets.')
+                print('        >>> scons ignore_configure_errors=1')
+                print('')
+                print('')
                 SCons.Script.Exit(1)
             sys.stdout.write(self.env['color_clear'])
 
@@ -841,7 +841,7 @@ class SConsProject:
             libs_error = []
             for lib, level in allLibs:
                 if not lib.enabled(env):
-                    print 'Target "'+name+'" compiled without "'+lib.name+'" library.'
+                    print('Target "'+name+'" compiled without "'+lib.name+'" library.')
                 else:
                     checkStatus = True
                     if not self.checkLibrary( lib ):
@@ -1399,7 +1399,7 @@ class SConsProject:
         # Add rc files (windows only)
         if self.windows:
             for rc in rc_files:
-                print rc
+                print(rc)
             #   sourcesFiles.append( localEnv.RES( rc ) );
 
         if precinc and self.windows:

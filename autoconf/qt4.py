@@ -1,4 +1,4 @@
-from _external import *
+from ._external import *
 import os
 import SCons.Util
 
@@ -29,7 +29,7 @@ def locateQt4Command(env, command, bindir):
 	
 	msg = 'Qt4 command "' + command + '" not found. Tried: ' + str(progs) + '.'
 	#raise Exception(msg)
-	print 'Warning: ', msg
+	print('Warning: ', msg)
 	return command
 
 class Qt4Checker(LibWithHeaderChecker):
@@ -136,7 +136,7 @@ class Qt4Checker(LibWithHeaderChecker):
 		for mod in self.getLibs(conf.env):
 			r = self.CheckLibWithHeader( conf, [mod], header=[mod+'/'+mod], language='c++' )
 			if not r:
-				print 'error: ',mod
+				print('error: ',mod)
 			result &= r
 		return result
 	

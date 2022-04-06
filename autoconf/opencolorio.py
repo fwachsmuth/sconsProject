@@ -1,4 +1,4 @@
-from _external import *
+from ._external import *
 # from yaml import *
 # from tinyxml import *
 

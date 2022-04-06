@@ -1,5 +1,5 @@
-from _external import *
-from ilmbase import *
+from ._external import *
+from .ilmbase import *
 
 ctl = LibWithHeaderChecker(
 		['IlmCtlSimd', 'IlmCtl', 'IlmCtlMath'],

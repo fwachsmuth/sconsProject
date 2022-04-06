@@ -1,6 +1,6 @@
-from _external import *
-from boost import *
-from boost_log import *
+from ._external import *
+from .boost import *
+from .boost_log import *
 
 tuttleHost = LibWithHeaderChecker(
         'tuttleHost',

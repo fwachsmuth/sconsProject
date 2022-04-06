@@ -45,4 +45,4 @@ project.end()
 
 """
 
-from project import SConsProject
+from .project import SConsProject

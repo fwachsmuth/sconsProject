@@ -1,6 +1,6 @@
-from _external import *
-from m import *
-from lcms import *
+from ._external import *
+from .m import *
+from .lcms import *
 
 rawDependencies = [
 		m,			

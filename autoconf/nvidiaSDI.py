@@ -1,6 +1,6 @@
-from _external import *
-from gl import *
-from glu import *
+from ._external import *
+from .gl import *
+from .glu import *
 
 nvidiaSDI = LibWithHeaderChecker( ['XNVCtrl', 'anc', 'X11', 'Xxf86vm', 'Xi', 'Xmu'],
                                   ['NVCtrl.h'],

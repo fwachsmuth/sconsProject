@@ -1,4 +1,4 @@
-from _external import *
+from ._external import *
 
 def locateCommand(env, cmd, bindir):
 	path = env.WhereIs(cmd, path=bindir)

@@ -1,6 +1,6 @@
-from _external import *
-from boost import *
-from boost_system import *
+from ._external import *
+from .boost import *
+from .boost_system import *
 
 
 boost_locale = LibWithHeaderChecker(

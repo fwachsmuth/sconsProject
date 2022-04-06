@@ -1,4 +1,4 @@
-from _external import *
+from ._external import *
 
 matlab = LibWithHeaderChecker(['mex', 'mx'], ['mex.h'], 'c', name='matlab')
 

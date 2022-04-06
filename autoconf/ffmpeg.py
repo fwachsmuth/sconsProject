@@ -1,6 +1,6 @@
-from _external import *
-from z import *
-from bz2 import *
+from ._external import *
+from .z import *
+from .bz2 import *
 
 resampleLibraryName = 'avresample'
 

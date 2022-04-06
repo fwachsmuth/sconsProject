@@ -1,3 +1,3 @@
-from _external import *
+from ._external import *
 
 xvid = LibChecker('xvidcore')

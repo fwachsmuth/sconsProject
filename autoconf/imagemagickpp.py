@@ -1,5 +1,5 @@
-from _external import *
-from imagemagick import *
+from ._external import *
+from .imagemagick import *
 
 # imagemagick C++ API
 imagemagickpp = LibWithHeaderChecker(

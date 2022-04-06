@@ -1,6 +1,6 @@
-from _external import *
-from boost_system import *
-from boost import *
+from ._external import *
+from .boost_system import *
+from .boost import *
 
 boost_filesystem = LibWithHeaderChecker( 'boost_filesystem',
                                          'boost/filesystem.hpp', 'c++',

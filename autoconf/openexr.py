@@ -1,6 +1,6 @@
-from _external import *
-from ilmbase import *
-from z import *
+from ._external import *
+from .ilmbase import *
+from .z import *
 
 openexr = LibWithHeaderChecker(
 		['IlmImf'],

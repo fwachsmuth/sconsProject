@@ -4,7 +4,7 @@ Display fonctions.
 
 import atexit
 import sys
-from colors import colors
+from .colors import colors
 
 
 # Make the build fail if we pass fail=1 on the command line
@@ -50,21 +50,21 @@ def display_build_status(removedFromDefaultTargets):
     '''
 	status, failures_message = build_status()
 	if status == 'failed':
-		print colors['fail']
-		print ">>>"
-		print ">>> build failed"
-		print ">>>" + colors['clear']
+		print(colors['fail'])
+		print(">>>")
+		print(">>> build failed")
+		print(">>>" + colors['clear'])
 	elif status == 'ok':
-		print colors['success']
-		print ">>>"
-		print ">>> build succeeded"
-		print ">>>" + colors['clear']
+		print(colors['success'])
+		print(">>>")
+		print(">>> build succeeded")
+		print(">>>" + colors['clear'])
 		if removedFromDefaultTargets:
-			print "\nSome targets have been removed from default targets, due to missing dependencies:"
+			print("\nSome targets have been removed from default targets, due to missing dependencies:")
 			for k, v in removedFromDefaultTargets.iteritems():
-				print " * '%s': %s" % (k, str(v))
-			print "\nSee 'config.log' to see the configure errors."
-	print failures_message
+				print(" * '%s': %s" % (k, str(v)))
+			print("\nSee 'config.log' to see the configure errors.")
+	print(failures_message)
 
 
 
@@ -75,10 +75,10 @@ def clear_atexit_excepthook(exctype, value, traceback):
     '''
     atexit._exithandlers[:] = []
     sys.__excepthook__(exctype, value, traceback)
-    print colors['fail']
-    print ">>>"
-    print ">>> scons error"
-    print ">>>" + colors['clear']
+    print(colors['fail'])
+    print(">>>")
+    print(">>> scons error")
+    print(">>>" + colors['clear'])
 
 # this don't work...
 sys.excepthook = clear_atexit_excepthook

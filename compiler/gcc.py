@@ -136,7 +136,7 @@ def setup(ccBinArg, cxxBinArg):
     ccVersionStr = retrieveVersion(ccBinArg)
     cxxVersionStr = retrieveVersion(cxxBinArg)
     if ccVersionStr != cxxVersionStr:
-        print "Warning: CC version and CXX version doesn't match: CC version is %s and CXX version is %s\n" % (ccVersionStr, cxxVersionStr)
+        print("Warning: CC version and CXX version doesn't match: CC version is %s and CXX version is %s\n" % (ccVersionStr, cxxVersionStr))
     
     if ccVersionStr != 'unknown':
         ccVersion = [int(i) for i in ccVersionStr.split('.')]

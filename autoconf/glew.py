@@ -1,6 +1,6 @@
-from _external import *
-from glu import *
-from gl import *
+from ._external import *
+from .glu import *
+from .gl import *
 
 libname = 'GLEW'
 if windows:

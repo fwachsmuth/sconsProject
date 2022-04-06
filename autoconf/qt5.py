@@ -1,4 +1,4 @@
-from _external import *
+from ._external import *
 import os
 import SCons.Util
 
@@ -6,7 +6,7 @@ def unique(list):
 	return dict.fromkeys(list).keys()
 
 def subdirs(files):
-	dirs = unique(map(os.path.dirname, files))
+	dirs = list(unique(map(os.path.dirname, files)))
 	dirs.sort()
 	return dirs
 
@@ -29,7 +29,7 @@ def locateQt5Command(env, command, bindir):
 	
 	msg = 'Qt5 command "' + command + '" not found. Tried: ' + str(progs) + '.'
 	#raise Exception(msg)
-	print 'Warning: ', msg
+	print('Warning: ', msg)
 	return command
 
 class Qt5Checker(LibWithHeaderChecker):
@@ -54,10 +54,10 @@ class Qt5Checker(LibWithHeaderChecker):
 				  useLocalIncludes = True ):
 		self.name  = 'qt5'
 		postfix = '' if not windows else '5'
-                for m in modules:
-                    realName = m + postfix
-                    if realName not in self.libs:
-                        self.libs.append( realName )
+		for m in modules:
+			realName = m + postfix
+			if realName not in self.libs:
+				self.libs.append( realName )
 		self.uiFiles =self.getAbsoluteCwd(uiFiles)
 		self.defines = defines[:]
 		self.useLocalIncludes = useLocalIncludes
@@ -131,7 +131,7 @@ class Qt5Checker(LibWithHeaderChecker):
 		for mod in self.getLibs(conf.env):
 			r = self.CheckLibWithHeader( conf, [mod], header=[mod+'/'+mod], language='c++' )
 			if not r:
-				print 'error: ',mod
+				print('error: ',mod)
 			result &= r
 		return result
 	

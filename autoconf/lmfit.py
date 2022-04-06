@@ -15,6 +15,6 @@
 # incdir_lmfit = [ join(extern, 'lmfit/build/include/') ]
 # libdir_lmfit = [ join(extern, 'lmfit/build/lib/') ]
 
-from _external import *
+from ._external import *
 
 lmfit = LibWithHeaderChecker(['lmmin'],['lmcurve.h','lmmin.h'], 'c', name='lmfit')

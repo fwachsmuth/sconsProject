@@ -1,6 +1,6 @@
-from _external import *
-from pthread import *
-from half import *
+from ._external import *
+from .pthread import *
+from .half import *
 
 ilmbase = LibWithHeaderChecker(
 		['Imath', 'Iex', 'IlmThread'],

@@ -1,5 +1,5 @@
-from _external import *
-from boost import *
+from ._external import *
+from .boost import *
 
 class BoostUnittestframeworkChecker(BaseLibChecker):
 

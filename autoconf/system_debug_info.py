@@ -1,4 +1,4 @@
-from _external import *
+from ._external import *
 
 name = 'system_debug_info'
 if windows:

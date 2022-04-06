@@ -1,5 +1,5 @@
-from _external import *
-from pthread import *
+from ._external import *
+from .pthread import *
 
 wxwidgets = LibWithHeaderChecker( 
 			['wx_gtk2u_xrc-$version_wxwidgets',
