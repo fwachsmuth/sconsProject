@@ -1212,7 +1212,7 @@ class SConsProject:
                 dependencies=[], installDir=None, installAs=None, install=True,
                 headers=[], localHeaders=[],
                 accept=['*.cpp', '*.cc', '*.c'], reject=['@', '_qrc', '_ui', '.moc.cpp'],
-                public=True, publicName=None, outArgs=None
+                public=True, publicName=None, outArgs=None, loadableModule=False
             ):
         '''
         To create a SharedLibrary and expose it in the project to be simply used by other targets.
@@ -1284,7 +1284,10 @@ class SConsProject:
         #print "target:", target
         localEnv['PDB'] = str(target) + '.pdb'
         # create the target
-        dstLib = localEnv.SharedLibrary( target=target, source=sourcesFiles )
+        if loadableModule:
+            dstLib = localEnv.LoadableModule( target=target, source=sourcesFiles )
+        else:
+            dstLib = localEnv.SharedLibrary( target=target, source=sourcesFiles )
 
         # explicitly create dependencies to all internal libraries used
         # i.e. internal libraries need to be compiled before this target
